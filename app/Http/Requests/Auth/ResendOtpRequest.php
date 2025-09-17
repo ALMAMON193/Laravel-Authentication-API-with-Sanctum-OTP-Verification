@@ -9,9 +9,7 @@ class ResendOtpRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-    }
-
-    public function rules(): array
+    }public function rules(): array
     {
         return [
             'email' => 'required|email|exists:users,email',

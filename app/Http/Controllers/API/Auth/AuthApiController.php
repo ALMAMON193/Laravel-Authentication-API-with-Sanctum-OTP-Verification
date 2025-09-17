@@ -21,7 +21,8 @@ class AuthApiController extends Controller
     {
         try {
             $user = User::create([
-                'name' => $request->name,
+                'fname' => $request->fname,
+                'lname' => $request->lname,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone_number' => $request->phone_number,
@@ -169,7 +170,6 @@ class AuthApiController extends Controller
             return $this->sendError('Failed to reset password', ['error' => $e->getMessage()], 500);
         }
     }
-
     public function logoutApi(Request $request): \Illuminate\Http\JsonResponse
     {
         try {

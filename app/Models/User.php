@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- * @method static create(array $array)
- * @method static where(string $string, mixed $email)
- * @property mixed $email
- */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser ,HasName
 {
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
+
     protected $fillable = [
-        'name',
+        'fname',
+        'lname',
         'email',
         'password',
         'user_type',
@@ -28,23 +28,41 @@ class User extends Authenticatable
         'reset_password_token',
         'reset_password_token_expire_at',
     ];
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
-    protected function casts(): array
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function getName(): string
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return trim($this->fname . ' ' . $this->lname) ?: 'Unknown User';
     }
+
     public function otps()
     {
         return $this->hasMany(Otp::class);
     }
+
     public function latestOtp()
     {
         return $this->hasOne(Otp::class)->latestOfMany();
+    }
+
+
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
+
+    public function getFilamentName(): string
+    {
+       return  "{$this->fname} {$this->lname}";
     }
 }
