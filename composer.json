@@ -7,11 +7,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "filament/filament": "4.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.2",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "^3.6",
         "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
@@ -41,7 +39,6 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
